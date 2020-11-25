@@ -4,36 +4,67 @@ using UnityEngine;
 
 public class Hacker : MonoBehaviour
 {
-    // Start is called before the first frame update
+    // Game State
+    public int level;
+    public enum Screen { MainMenu, WaitingForPassword, Win }
+
+    public Screen currentScreen = Screen.MainMenu;
+
     void Start()
     {
-        ShowMainMenu();
+        ShowMainMenu("Hello Nate");
     }
 
-    void ShowMainMenu() 
+    void ShowMainMenu(string greeting)
     {
+        currentScreen = Screen.MainMenu;
         Terminal.ClearScreen();
-
-        string greeting = "Hello Nate";
         Terminal.WriteLine(greeting);
-
         Terminal.WriteLine("What would you like to hack into?");
-        
         Terminal.WriteLine("");
-        
         Terminal.WriteLine("Press 1 for the local library");
         Terminal.WriteLine("Press 2 for the police station");
         Terminal.WriteLine("Press 3 for the NASA");
-
         Terminal.WriteLine("Enter your selection:");
-
     }
 
-    // Update is called once per frame
-    void Update()
+    void OnUserInput(string input)
     {
-        
+        if (input == "menu")
+        {
+            ShowMainMenu("Hello Nate");
+        }
+        else if (currentScreen == Screen.MainMenu)
+        {
+            EmitMenuSelection(input);
+        }
+    }
+    private void EmitMenuSelection(string input)
+    {
+        if (input == "1")
+        {
+            level = 1;
+            StartGame();
+        }
+        else if (input == "2")
+        {
+            level = 2;
+            StartGame();
+        }
+        else if (input == "007")
+        {
+            Terminal.WriteLine("Please select a level Mr. Bond!");
+        }
+        else
+        {
+            Terminal.WriteLine("Please choose a valid level");
+        }
     }
 
-    
+    void StartGame()
+    {
+        currentScreen = Screen.WaitingForPassword;
+        Terminal.WriteLine("You have chose level " + level);
+        Terminal.WriteLine("Please Enter Your Password:");
+    }
 }
