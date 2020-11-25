@@ -8,7 +8,10 @@ public class Hacker : MonoBehaviour
     public int level;
     public enum Screen { MainMenu, WaitingForPassword, Win }
 
+
     public Screen currentScreen = Screen.MainMenu;
+
+    private string[] validPasswords = { "apple", "nate" };
 
     void Start()
     {
@@ -38,7 +41,26 @@ public class Hacker : MonoBehaviour
         {
             EmitMenuSelection(input);
         }
+        else if (currentScreen == Screen.WaitingForPassword)
+        {
+
+            CheckPassword(input);
+        }
     }
+
+    void CheckPassword(string input)
+    {
+        if (input == validPasswords[level - 1])
+        {
+            Terminal.WriteLine("Congratulations, that is correct.");
+            ShowMainMenu("Hello Nate, Nice, you passed level " + level);
+        }
+        else
+        {
+            Terminal.WriteLine("Incorrect Password.");
+        }
+    }
+
     private void EmitMenuSelection(string input)
     {
         if (input == "1")
